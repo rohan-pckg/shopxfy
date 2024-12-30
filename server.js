@@ -16,6 +16,7 @@ const allowedOrigins = [
   'https://kktest0001.myshopify.com',
   'https://www.w3schools.com',
   'https://myshopify.com/',
+  'https://zyvorah.com/',
 ];
 
 // CORS configuration
