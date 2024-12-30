@@ -190,9 +190,9 @@ app.post('/create-variant', async (req, res) => {
             return newVariant.id;
 
         } catch (error) {
-            console.error('Error creating variant:', error.response ? error.response.body : error.message);
-            res.json({ success: false, error: error.response ? error.response.body : error.message });
-        }
+        console.error('Error creating variant:', error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
       }
 
 
