@@ -64,6 +64,14 @@ app.get('/create-product', async (req, res) => {
           }
         ]
       }
+    
+      try {
+        const createdProduct = await shopify.product.create(newProduct)
+        console.log(`Product created: ${createdProduct.id}`)
+      } catch (error) {
+        console.error(`Failed to create product: ${error.message}`)
+      }
+
           try {
         const createdProduct = await shopify.product.create(newProduct);
         res.status(200).json({ success: true, product: createdProduct });
@@ -139,59 +147,63 @@ app.get('/create-product', async (req, res) => {
 // });
 
 
+
 app.post('/create-variant', async (req, res) => {
-  const { product_id, width, height } = req.body;
-  if (!product_id || !width || !height) {
-    return res.status(400).json({ success: false, error: 'Missing product_id, width, or height' });
-  }
-
-  const pricePerSquareFoot = 200;
-  const newPrice = (width * height * pricePerSquareFoot).toFixed(2);
-  
-  try {
-    // Fetch existing variants for the product to check if a variant already exists
+    const { product_id, width, height } = req.body;
+    const pricePerSquareFoot = 200;
+    // const width = 4;
+    // const height = 4;
+    const newPrice = (width * height * pricePerSquareFoot).toFixed(2);
+    // const newPrice = (3 * 3 * pricePerSquareFoot).toFixed(2);7365438799962
+    // const product_id = 7365444567130;
+    // const product_id = 7365438799962;
     const variants = await shopify.productVariant.list(product_id);
+     // Check if a variant with the desired options already exists
+     const existingVariant = variants.find(variant => 
+        variant.option1 === `${width} * ${height}`
+      );
 
-    // Check if a variant with the desired options already exists
-    const existingVariant = variants.find(variant =>
-      variant.option1 === `${width} * ${height}`
-    );
+    
+      if(existingVariant) {
+        console.log('Variant already exists:', existingVariant.id);
+        res.json({ success: true, mag:"Variant already exists:", variantid: existingVariant.id });
+        return existingVariant.id;
+      } else {
+        const newVariantData = {
+            option1: `${width} * ${height}`,
+            price: newPrice,
+            sku: `SKU-${width}-${height}`,
+            inventory_quantity: 10, // Ensure inventory quantity is set
+            inventory_policy: 'continue' // Allow selling when out of stock
+        };
 
-    if (existingVariant) {
-      console.log('Variant already exists:', existingVariant.id);
-      return res.json({
-        success: true,
-        message: "Variant already exists",
-        variantId: existingVariant.id
-      });
-    } else {
-      const newVariantData = {
-        option1: `${width} * ${height}`,
-        price: newPrice,
-        sku: `SKU-${width}-${height}`,
-        inventory_quantity: 10, // Set inventory quantity
-        inventory_policy: 'continue', // Allow selling when out of stock
-        fulfillment_service: 'manual', // Ensure fulfillment service is manual
-        requires_shipping: true, // Ensure shipping is required
-        taxable: true // Ensure the product is taxable
-      };
+        // const newVariantData = {
+        //   // variant: {
+        //       option1: `${width} * ${height}`,
+        //       price: newPrice,
+        //       sku: `SKU-${width}-${height}`,
+        //       inventory_quantity: 10, // Ensure inventory quantity is set
+        //       inventory_policy: 'continue', // Allow selling when out of stock
+        //       fulfillment_service: 'manual', // Ensure fulfillment service is set to manual
+        //       requires_shipping: true, // Ensure shipping is required
+        //       taxable: true // Ensure the product is taxable
+        //   // }
+        // };
+  
+    
+        try {
+            const newVariant = await shopify.productVariant.create(product_id, newVariantData);
+            res.json({ success: true, variantid: newVariant.id, variant: newVariant });
+            console.log('New variant created:', newVariant.id);
+            return newVariant.id;
 
-      // Create the new variant
-      const newVariant = await shopify.productVariant.create(product_id, newVariantData);
-      console.log('New variant created:', newVariant.id);
+        } catch (error) {
+            console.error('Error creating variant:', error.response ? error.response.body : error.message);
+            res.json({ success: false, error: error.response ? error.response.body : error.message });
+        }
+      }
 
-      return res.json({
-        success: true,
-        message: 'New variant created',
-        variantId: newVariant.id,
-        variant: newVariant
-      });
-    }
-  } catch (error) {
-    console.error('Error creating variant:', error.message);
-    return res.status(500).json({ success: false, error: error.message });
-  }
-});
+
     
 });
 
