@@ -122,29 +122,29 @@ app.get('/create-product', async (req, res) => {
 // });
 
 // working
-// app.get('/create-variant', async (req, res) => {
-//     // const { product_id, width, height } = req.body;
-//     const pricePerSquareFoot = 200;
-//     // const newPrice = (width * height * pricePerSquareFoot).toFixed(2);
+app.get('/create-variant', async (req, res) => {
+    // const { product_id, width, height } = req.body;
+    const pricePerSquareFoot = 200;
+    // const newPrice = (width * height * pricePerSquareFoot).toFixed(2);
 
-//     const newPrice = (3 * 3 * pricePerSquareFoot).toFixed(2);
-//     const product_id = 7365444567130;
+    const newPrice = (3 * 3 * pricePerSquareFoot).toFixed(2);
+    const product_id = 7365444567130;
 
-//     const newVariantData = {
-//         option1: "3 * 3",
-//         price: newPrice,
-//         sku: 'custom-sku',
-//         inventory_quantity: 10,
-//     };
+    const newVariantData = {
+        option1: "3 * 3",
+        price: newPrice,
+        sku: 'custom-sku',
+        inventory_quantity: 10,
+    };
 
-//     try {
-//         const newVariant = await shopify.productVariant.create(product_id, newVariantData);
-//         res.json({ success: true, variant: newVariant });
-//     } catch (error) {
-//         console.error('Error creating variant:', error.response ? error.response.body : error.message);
-//         res.json({ success: false, error: error.response ? error.response.body : error.message });
-//     }
-// });
+    try {
+        const newVariant = await shopify.productVariant.create(product_id, newVariantData);
+        res.json({ success: true, variant: newVariant });
+    } catch (error) {
+        console.error('Error creating variant:', error.response ? error.response.body : error.message);
+        res.json({ success: false, error: error.response ? error.response.body : error.message });
+    }
+});
 
 
 
