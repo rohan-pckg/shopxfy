@@ -130,10 +130,13 @@ app.get('/create-variant', async (req, res) => {
     const product_id = 7365444567130;
 
     const newVariantData = {
-        option1: "3 * 3",
-        price: newPrice,
-        sku: 'custom-sku',
-        inventory_quantity: 10,
+
+        option1: `${width} feet wide x ${height} feet high`,
+          price: newPrice.toString(),
+          fulfillment_service: 'manual',
+          inventory_policy: 'continue',
+          requires_shipping: true,
+          taxable: true,
     };
 
     try {
@@ -169,11 +172,12 @@ app.post('/create-variant', async (req, res) => {
         return existingVariant.id;
       } else {
         const newVariantData = {
-            option1: `${width} * ${height}`,
-            price: newPrice,
-            sku: `SKU-${width}-${height}`,
-            inventory_quantity: 10, // Ensure inventory quantity is set
-            inventory_policy: 'continue' // Allow selling when out of stock
+            option1: `${width} feet wide x ${height} feet high`,
+          price: newPrice.toString(),
+          fulfillment_service: 'manual',
+          inventory_policy: 'continue',
+          requires_shipping: true,
+          taxable: true,
         };
 
         // const newVariantData = {
