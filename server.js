@@ -64,13 +64,13 @@ app.get('/create-product', async (req, res) => {
           }
         ]
       }
-    
-      try {
-        const createdProduct = await shopify.product.create(newProduct)
-        console.log(`Product created: ${createdProduct.id}`)
-      } catch (error) {
-        console.error(`Failed to create product: ${error.message}`)
-      }
+          try {
+        const createdProduct = await shopify.product.create(newProduct);
+        res.status(200).json({ success: true, product: createdProduct });
+    } catch (error) {
+        console.error('Error creating product:', error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
 // app.get('/create-variant', async (req, res) => {
