@@ -14,7 +14,8 @@ app.use(express.json());
 // List of allowed origins
 const allowedOrigins = [
   'https://kktest0001.myshopify.com',
-  'https://www.w3schools.com'
+  'https://www.w3schools.com',
+  'https://myshopify.com/',
 ];
 
 // CORS configuration
