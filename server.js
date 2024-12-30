@@ -130,10 +130,12 @@ app.get('/create-variant', async (req, res) => {
     const product_id = 7365444567130;
 
     const newVariantData = {
-        option1: "3 * 3",
-        price: newPrice,
-        sku: 'custom-sku',
-        inventory_quantity: 10,
+       option1: ${width} feet wide x ${height} feet high,
+        price: newPrice.toString(),
+        fulfillment_service: 'manual',
+        inventory_policy: 'continue',
+        requires_shipping: true,
+        taxable: true,
     };
 
     try {
