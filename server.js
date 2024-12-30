@@ -10,26 +10,23 @@ const app = express();
 app.use(express.json());
 
 
-
-// List of allowed origins
 const allowedOrigins = [
   'https://kktest0001.myshopify.com',
   'https://www.w3schools.com',
-  'https://myshopify.com/',
-  'https://zyvorah.com/',
+  'https://zyvorah.com'
 ];
 
-// CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-          callback(null, true);
-      } else {
-          callback(new Error('Not allowed by CORS'));
-      }
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
   },
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 };
 
 app.use(cors(corsOptions));
