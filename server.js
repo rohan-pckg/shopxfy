@@ -162,7 +162,7 @@ app.post('/create-variant', async (req, res) => {
     const variants = await shopify.productVariant.list(product_id);
      // Check if a variant with the desired options already exists
      const existingVariant = variants.find(variant => 
-        variant.option1 === `${width} * ${height}`
+        variant.option1 === `${width} feet wide x ${height} feet high`
       );
 
     
